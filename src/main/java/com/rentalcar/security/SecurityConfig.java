@@ -61,8 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	public void configure(final AuthenticationManagerBuilder auth) throws Exception{
-// auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
-		auth.authenticationProvider(authenticationProvider());
+   // auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+	  auth.authenticationProvider(authenticationProvider());
 	}
 	
 	@Bean
@@ -98,7 +98,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.formLogin()
 			.loginPage("/login/form")
 			.loginProcessingUrl("/login")
-			.defaultSuccessUrl("/utenti", true)
+			.defaultSuccessUrl("/utenti/controlla", true)
 			.failureUrl("/login/form?error")
 			.usernameParameter("username")
 			.passwordParameter("password")

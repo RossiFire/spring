@@ -55,21 +55,31 @@ public class UtentiController {
 	
 	
 	@PostMapping(value = "/controlla")
-	public String controllaLogin(@ModelAttribute("utente") Utente u, Model model,HttpServletRequest request) {
-	tipoUtente = utentiService.ControllaUtente(u.getNome(), u.getPassword());
-	if(tipoUtente.equals("NO")) {
-		model.addAttribute("titolo", "Login");
-		return "redirect:/index";
+	public String getHome(Model model, HttpServletRequest request) {
+		List<Utente> recordset = null;
+		long NumRecords = 0;
+		
+		getAllUtenti();
+		
+		if(MainRecordSet!= null) {
+			
+			//record trovati nella tabella
+			NumRecords = MainRecordSet.size();
+			
+			recordset = MainRecordSet.stream().filter(u -> u.getId() != -1).skip(0)
+					.limit(LimitePag).collect(Collectors.toList());
+		}
+	//	tipoUtente = session.getAttribute("tipoUtente").toString();
+		model.addAttribute("titolo","Utenti Customer");
+		model.addAttribute("NumRecords", NumRecords);
+		model.addAttribute("utenti", recordset);
+		model.addAttribute("LimitePag", LimitePag);
+		model.addAttribute("orderBy", OrderBy);
+		model.addAttribute("orderType", OrderType);
+		model.addAttribute("PageNum", PageNum);
+		model.addAttribute("tipoUtente", "ADMIN");
+		return "customer";
 	}
-	//inizializzare variabili di sessione
-	session = request.getSession();
-	session.setAttribute("tipoUtente", tipoUtente);
-	session.setAttribute("idCorrente",utentiService.selByCredenziali(u.getNome(), u.getPassword()));
-	model.addAttribute("tipoUtente", session.getAttribute("tipoUtente").toString());
-	return "redirect:/utenti" ;
-	
-	}
-	
 	
 	
 	
@@ -120,6 +130,7 @@ public class UtentiController {
 		TipoUtente tp = new TipoUtente(); 
 		tp.setId(2);
 		user.setTipoutente(tp);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
 		utentiService.Aggiungi(user);
 		

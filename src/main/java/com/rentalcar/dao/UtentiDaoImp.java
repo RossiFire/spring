@@ -2,6 +2,7 @@ package com.rentalcar.dao;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.stereotype.Repository;
@@ -68,7 +69,6 @@ public class UtentiDaoImp extends AbstractDao<Utente, Integer> implements Utenti
 
 	@Override
 	public int selByCredenziali(String nome, String password) {
-		Utente nonEs = new Utente();
 		String jpql = "SELECT a FROM Utente a WHERE a.nome = :name AND a.password = :pwd";
 		Utente u = (Utente) entityManager.createQuery(jpql).setParameter("name", nome)
 				.setParameter("pwd", password).getSingleResult();
@@ -83,8 +83,12 @@ public class UtentiDaoImp extends AbstractDao<Utente, Integer> implements Utenti
 	@Override
 	public Utente selByUserDetails(String nome) {
 		String jpql = "SELECT a FROM Utente a WHERE a.nome = :name";
-		Utente u = (Utente) entityManager.createQuery(jpql).setParameter("name", nome).getSingleResult();
-		return u;
+		List<Utente> utenti = entityManager.createQuery(jpql).setParameter("name", nome).getResultList();
+		if(utenti.isEmpty()) {
+			throw new NoResultException("NESSUN UTENTE TROVATO");
+		}else {
+			return utenti.get(0);
+		}
 	}
 
 

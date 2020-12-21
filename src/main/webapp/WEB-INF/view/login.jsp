@@ -4,7 +4,7 @@
 
 
 
-<c:url var="loginUrl" value="/login"/>
+<c:url var="loginUrl" value="/utenti/controlla"/>
 
 
 <form action="${loginUrl}" method="POST">
