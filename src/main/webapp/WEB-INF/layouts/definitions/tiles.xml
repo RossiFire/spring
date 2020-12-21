@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+		<!-- si richiama questo template, poi titolo e content saranno diversi 
+		in base agli altri tiles che si creano sotto, come ad esempio index-->
+	<definition name="baseLayout" template="/WEB-INF/layouts/template/base.jsp">
+		<put-attribute name="titolo" value="" />
+		<put-attribute name="content" value="" />
+		<put-attribute name="footer" value="/WEB-INF/layouts/template/footer.jsp" />
+	</definition>
+	
+
+	<definition name="customer" extends="baseLayout">
+			<put-attribute name="titolo"  value="Visualizza Customer" />
+		<put-attribute name="content" value="/WEB-INF/view/customer.jsp" />  
+	</definition>
+	
+		<definition name="insUtente" extends="baseLayout">
+			<put-attribute name="titolo"  value="Aggiungi Utente" />
+		<put-attribute name="content" value="/WEB-INF/view/insUtente.jsp" />  
+	</definition>
+	
+	<definition name="modUtente" extends="baseLayout">
+			<put-attribute name="titolo"  value="Modifica Utente" />
+		<put-attribute name="content" value="/WEB-INF/view/modUtente.jsp" />  
+	</definition>
+	
+	<definition name="adminMezzi" extends="baseLayout">
+			<put-attribute name="titolo"  value="Lista Mezzi" />
+		<put-attribute name="content" value="/WEB-INF/view/adminMezzi.jsp" />  
+	</definition>
+	
+	<definition name="insMezzo" extends="baseLayout">
+		<put-attribute name="titolo"  value="Inserisci Mezzo" />
+		<put-attribute name="content" value="/WEB-INF/view/insMezzo.jsp" />  
+	</definition>
+	
+	<definition name="profilo" extends="baseLayout">
+		<put-attribute name="titolo"  value="Profilo" />
+		<put-attribute name="content" value="/WEB-INF/view/profilo.jsp" />  
+	</definition>
+	
+	<definition name="prenotazioni" extends="baseLayout">
+		<put-attribute name="titolo"  value="Prenotazioni" />
+		<put-attribute name="content" value="/WEB-INF/view/prenotazioni.jsp" />  
+	</definition>
+	
+		<definition name="insPrenotazione" extends="baseLayout">
+		<put-attribute name="titolo"  value="Nuova Prenotazione" />
+		<put-attribute name="content" value="/WEB-INF/view/insPrenotazione.jsp" />  
+	</definition>
+	
+	
+	
+	<!--  LOGIN TILES -->
+
+	<definition name="baseLogin" template="/WEB-INF/layouts/template/baseLogin.jsp">
+		<put-attribute name="titolo"  value="" />
+		<put-attribute name="content" value="" />  
+	</definition>
+	
+	<definition name="login" extends="baseLogin">
+		<put-attribute name="titolo"  value="Accesso al sito" />
+		<put-attribute name="content" value="/WEB-INF/view/login.jsp" />  
+	</definition>
+	
+
+		
+</tiles-definitions>

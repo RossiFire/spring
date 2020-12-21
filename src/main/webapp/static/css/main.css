@@ -1,0 +1,12 @@
+@charset "ISO-8859-1";
+
+*, html{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.jumbotron{
+	background-color: lightblue !important;
+	color: black !important;
+}
