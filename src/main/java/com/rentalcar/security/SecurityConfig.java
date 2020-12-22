@@ -36,12 +36,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	@Qualifier("userDetailsService")
-	private UserDetailsService UserDetailsService;
+	private UserDetailsService userDetailsService;
 	
 	@Autowired
 	DataSource dataSource;
 	
 	
+	// BEAN PER CRIPTARE LA PASSWORD
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -50,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	// CONFIGURAZIONE AUTENTICAZIONE UTENTE  
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(UserDetailsService).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 		
 	}
 	
@@ -61,14 +62,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.authorizeRequests()
 		.antMatchers("/resources/**").permitAll()
 		.antMatchers("/login/**").permitAll()
-		.antMatchers("/").hasAnyRole("ADMIN", "CUSTOMER")
+		.antMatchers("/").permitAll()
 		.antMatchers(ADMIN_UTENTI_MATCHER).access("hasRole('ADMIN')")
 		.antMatchers("/utenti/**").hasRole("CUSTOMER")
 		.and()
 //		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 			.formLogin()
 			.loginPage("/login/form")
-			.loginProcessingUrl("/utenti/prova")
+			.loginProcessingUrl("/login")
 			.defaultSuccessUrl("/utenti/prova")
 			.failureUrl("/login/form?error")
 			.usernameParameter("username")

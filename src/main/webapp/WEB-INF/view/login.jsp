@@ -4,7 +4,7 @@
 
 
 
-<c:url var="loginUrl" value="/utenti/prova"/>
+<c:url var="loginUrl" value="/login"/>
 
 <div class="jumbotron jumbotron-fluid">
   <div class="container">
