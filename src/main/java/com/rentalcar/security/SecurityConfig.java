@@ -78,11 +78,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			"/utenti/aggiungi/**",
 			"/utenti/modifica/**",
 			"/utenti/elimina/**",
-			"/utenti/controlla/**",
 	};
 			
-	
-	
 	
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception{
@@ -98,7 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.formLogin()
 			.loginPage("/login/form")
 			.loginProcessingUrl("/login")
-			.defaultSuccessUrl("/utenti/controlla", true)
+			.defaultSuccessUrl("/utenti", true)
 			.failureUrl("/login/form?error")
 			.usernameParameter("username")
 			.passwordParameter("password")
@@ -111,8 +108,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //		//.and().csrf().disable();
 	}
  
+	
 	public AuthenticationFilter authenticationFilter()throws Exception{
-		
 		AuthenticationFilter filter = new AuthenticationFilter();
 		filter.setAuthenticationManager(authenticationManagerBean());
 		filter.setAuthenticationFailureHandler(failureHandler());
@@ -120,6 +117,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		
 		return filter;
 	}
+	
 	
 	
 	public SimpleUrlAuthenticationFailureHandler failureHandler() {

@@ -83,7 +83,7 @@ public class UtentiController {
 	
 	
 	
-	@GetMapping
+	@PostMapping
 	public String getUtenti(Model model, HttpServletRequest request) {
 		
 		List<Utente> recordset = null;
@@ -108,6 +108,7 @@ public class UtentiController {
 		model.addAttribute("orderType", OrderType);
 		model.addAttribute("PageNum", PageNum);
 		model.addAttribute("tipoUtente", "ADMIN");
+		
 		return "customer";
 	}
 	
