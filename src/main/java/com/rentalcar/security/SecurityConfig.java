@@ -29,7 +29,7 @@ import com.rentalcar.service.UtentiService;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled=true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	
@@ -40,62 +40,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	DataSource dataSource;
 	
+	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
-	
-	  @Bean
-	  public UserDetailsService userDetailsService() {
-	    return new CustomUserDetailsService();
-	  };
-	
-	
-	
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
-	
-	
-	@Override
-	public void configure(final AuthenticationManagerBuilder auth) throws Exception{
-   // auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
-	  auth.authenticationProvider(authenticationProvider());
+	// CONFIGURAZIONE AUTENTICAZIONE UTENTE  
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(UserDetailsService).passwordEncoder(passwordEncoder());
 	}
 	
-	@Bean
-	public DaoAuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider atp = new DaoAuthenticationProvider();
-		atp.setUserDetailsService(UserDetailsService);
-		atp.setPasswordEncoder(passwordEncoder());
-		
-		return atp;
-	}
-	
-	private final static String[] ADMIN_UTENTI_MATCHER = {
-			"/utenti/aggiungi/**",
-			"/utenti/modifica/**",
-			"/utenti/elimina/**",
-	};
-			
-	
+	// CONFIGURAZIONE PAGINA DI LOGIN
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception{
 		http
 		.authorizeRequests()
 		.antMatchers("/resources/**").permitAll()
-		.antMatchers("/login/**").permitAll()
 		.antMatchers("/").hasAnyRole("ANONYMOUS", "CUSTOMER")
-		.antMatchers(ADMIN_UTENTI_MATCHER).access("hasRole('ADMIN')")
-		.antMatchers("/utenti/**").hasRole("CUSTOMER")
+		.antMatchers("/utenti/**").hasAnyRole("ADMIN","CUSTOMER")
 		.and()
-		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 			.formLogin()
 			.loginPage("/login/form")
 			.loginProcessingUrl("/login")
-			.defaultSuccessUrl("/utenti", true)
+			.defaultSuccessUrl("/utenti/prova")
 			.failureUrl("/login/form?error")
 			.usernameParameter("username")
 			.passwordParameter("password")
@@ -107,53 +77,63 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.logoutUrl("/login/form?logout");
 //		//.and().csrf().disable();
 	}
- 
-	
-	public AuthenticationFilter authenticationFilter()throws Exception{
-		AuthenticationFilter filter = new AuthenticationFilter();
-		filter.setAuthenticationManager(authenticationManagerBean());
-		filter.setAuthenticationFailureHandler(failureHandler());
-		filter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
-		
-		return filter;
-	}
-	
-	
-	
-	public SimpleUrlAuthenticationFailureHandler failureHandler() {
-		return new SimpleUrlAuthenticationFailureHandler("/login/form?error");
-	}
-	
-	
-	@Bean
-	public SavedRequestAwareAuthenticationSuccessHandler authenticationSuccessHandler() {
-		SavedRequestAwareAuthenticationSuccessHandler auth = new SavedRequestAwareAuthenticationSuccessHandler();
-		auth.setTargetUrlParameter("targetUrl");
-		
-		return auth;
-	}
 	
 	
 	
 	
+//	  @Bean
+//	  public UserDetailsService userDetailsService() {
+//	    return new CustomUserDetailsService();
+//	  };
+    
+    
+//	@Override
+//	public void configure(final AuthenticationManagerBuilder auth) throws Exception{
+//	  auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+//	  auth.authenticationProvider(authenticationProvider());
+//	}
 	
 //	@Bean
-//	@Override
-//	public UserDetailsService userDetailsService() {
-//		UserBuilder users = User.builder();
-//		InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+//	public DaoAuthenticationProvider authenticationProvider() {
+//		DaoAuthenticationProvider atp = new DaoAuthenticationProvider();
+//		atp.setUserDetailsService(UserDetailsService);
+//		atp.setPasswordEncoder(passwordEncoder());
 //		
-//		manager.createUser(users
-//				.username("Daniele")
-//				.password(new BCryptPasswordEncoder().encode("admin"))
-//				.roles("ADMIN", "CUSTOMER").build()
-//				);		
-//		manager.createUser(users
-//				.username("Net")
-//				.password(new BCryptPasswordEncoder().encode("info"))
-//				.roles("CUSTOMER").build()
-//				);
-//		return manager;
+//		return atp;
+//	}
+	
+	private final static String[] ADMIN_UTENTI_MATCHER = {
+			"/utenti/aggiungi/**",
+			"/utenti/modifica/**",
+			"/utenti/elimina/**",
+	};
+			
+ 
+	
+	
+	
+	
+//	public AuthenticationFilter authenticationFilter()throws Exception{
+//		AuthenticationFilter filter = new AuthenticationFilter();
+//		filter.setAuthenticationManager(authenticationManagerBean());
+//		filter.setAuthenticationFailureHandler(failureHandler());
+//		filter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
+//		
+//		return filter;
+//	}
+//	
+//	
+//	
+//	public SimpleUrlAuthenticationFailureHandler failureHandler() {
+//		return new SimpleUrlAuthenticationFailureHandler("/login/form?error");
+//	}
+//	
+//	
+//	@Bean
+//	public SavedRequestAwareAuthenticationSuccessHandler authenticationSuccessHandler() {
+//		SavedRequestAwareAuthenticationSuccessHandler auth = new SavedRequestAwareAuthenticationSuccessHandler();
+//		auth.setTargetUrlParameter("targetUrl");
+//		return auth;
 //	}
 	
 	

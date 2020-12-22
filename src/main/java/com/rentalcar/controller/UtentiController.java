@@ -12,9 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +34,7 @@ import com.sun.org.slf4j.internal.LoggerFactory;
 
 @Controller
 @RequestMapping("/utenti")
+@Secured ({"ROLE_ADMIN","ROLE_CUSTOMER"})
 public class UtentiController {
 	
 	@Autowired
@@ -179,7 +183,16 @@ public class UtentiController {
 		
 		return "redirect:/utenti";
 	}
+
 	
+	
+	
+	@RequestMapping(value="/prova")
+	public String home(ModelMap model, Authentication authentication) {
+		authentication.getPrincipal();
+		model.addAttribute("utente", utentiService.selByUserDetails(authentication.getName()));
+ 		return "profilo";
+ 	}
 	
 	
 	

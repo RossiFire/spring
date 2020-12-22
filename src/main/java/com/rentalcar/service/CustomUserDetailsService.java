@@ -1,8 +1,12 @@
 package com.rentalcar.service;
 
+import java.util.Arrays;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.rentalcar.dao.UtentiDao;
 import com.rentalcar.entities.Utente;
 
 @Service("userDetailsService")
@@ -17,26 +22,17 @@ import com.rentalcar.entities.Utente;
 public class CustomUserDetailsService implements UserDetailsService{
 	
 	@Autowired
-	private UtentiService utentiService;
+	private UtentiDao utentiRepo;
 
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserBuilder builder = null;
-		builder = User.withUsername(username);
-		Utente u = utentiService.selByUserDetails(username);
-		builder.username(u.getNome());
-		builder.password(u.getPassword());
-		if(u.getTipoutente().getTipo().equals("ADMIN")) {
-			builder.roles(u.getTipoutente().getTipo(), "CUSTOMER");
-		}else {
-			builder.roles(u.getTipoutente().getTipo());
-		}
 		
-		System.out.println(u.getNome());
-		System.out.println(u.getPassword());
-		
-		return builder.build();
+		Utente u = utentiRepo.selByUserDetails(username);
+		GrantedAuthority authority = new SimpleGrantedAuthority(u.getTipoutente().getTipo());
+		UserDetails userDetails = (UserDetails)new User(u.getNome(),
+				u.getPassword(), Arrays.asList(authority));
+		return userDetails;
 	}
 
 }

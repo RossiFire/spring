@@ -7,8 +7,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		// TODO Auto-generated method stub
-		return null;
+		 return new Class[] { WebApplicationContextConfig.class };
 	}
 
 	@Override
