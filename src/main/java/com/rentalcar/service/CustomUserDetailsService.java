@@ -35,14 +35,6 @@ public class CustomUserDetailsService implements UserDetailsService{
 		
 		System.out.println(u.getNome());
 		System.out.println(u.getPassword());
-		System.out.println(u.getNome());
-		System.out.println(u.getPassword());
-		System.out.println(u.getNome());
-		System.out.println(u.getPassword());
-		System.out.println(u.getNome());
-		System.out.println(u.getPassword());
-		System.out.println(u.getNome());
-		System.out.println(u.getPassword());
 		
 		return builder.build();
 	}

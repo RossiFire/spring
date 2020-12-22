@@ -89,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.antMatchers("/login/**").permitAll()
 		.antMatchers("/").hasAnyRole("ANONYMOUS", "CUSTOMER")
 		.antMatchers(ADMIN_UTENTI_MATCHER).access("hasRole('ADMIN')")
-		.antMatchers("/utenti/**").hasRole("ADMIN")
+		.antMatchers("/utenti/**").hasRole("CUSTOMER")
 		.and()
 		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 			.formLogin()
