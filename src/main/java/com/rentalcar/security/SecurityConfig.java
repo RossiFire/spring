@@ -53,10 +53,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	
 	
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
 	
 	
 	@Override
@@ -89,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.antMatchers("/login/**").permitAll()
 		.antMatchers("/").hasAnyRole("ANONYMOUS", "CUSTOMER")
 		.antMatchers(ADMIN_UTENTI_MATCHER).access("hasRole('ADMIN')")
-		.antMatchers("/utenti/**").hasAnyRole("CUSTOMER")
+		.antMatchers("/utenti/**").hasRole("ADMIN")
 		.and()
 		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 			.formLogin()
