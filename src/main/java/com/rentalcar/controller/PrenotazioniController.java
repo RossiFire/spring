@@ -44,9 +44,9 @@ public class PrenotazioniController {
 	public String getPrenotazioni(Model model, HttpServletRequest request) {
 		session = request.getSession();
 		tipoUtente = session.getAttribute("tipoUtente").toString();
-		int idCorrente = Integer.parseInt(session.getAttribute("idCorrente").toString());
 		List <Prenotazione> prenotazioni;
 		if(tipoUtente.equals("CUSTOMER")) {
+			int idCorrente = utentiService.selByUserDetails(session.getAttribute("username").toString()).getId();
 			prenotazioni = prenotazioniService.selByUserId(idCorrente);
 		}else {
 			prenotazioni= prenotazioniService.selTutti();			

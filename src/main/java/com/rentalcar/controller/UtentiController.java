@@ -34,7 +34,6 @@ import com.sun.org.slf4j.internal.LoggerFactory;
 
 @Controller
 @RequestMapping("/utenti")
-@Secured ({"ROLE_ADMIN","ROLE_CUSTOMER"})
 public class UtentiController {
 	
 	@Autowired
@@ -52,6 +51,7 @@ public class UtentiController {
 	private int PageNum = 1;
 	
 	private String tipoUtente;
+
 	
 	public void getAllUtenti() {
 		MainRecordSet = utentiService.selTutti();
@@ -60,39 +60,37 @@ public class UtentiController {
 	
 	
 	
-	@PostMapping(value = "/controlla")
-	public String getHome(Model model, HttpServletRequest request) {
-		List<Utente> recordset = null;
-		long NumRecords = 0;
-		
-		getAllUtenti();
-		
-		if(MainRecordSet!= null) {
-			
-			//record trovati nella tabella
-			NumRecords = MainRecordSet.size();
-			
-			recordset = MainRecordSet.stream().filter(u -> u.getId() != -1).skip(0)
-					.limit(LimitePag).collect(Collectors.toList());
-		}
-	//	tipoUtente = session.getAttribute("tipoUtente").toString();
-		model.addAttribute("titolo","Utenti Customer");
-		model.addAttribute("NumRecords", NumRecords);
-		model.addAttribute("utenti", recordset);
-		model.addAttribute("LimitePag", LimitePag);
-		model.addAttribute("orderBy", OrderBy);
-		model.addAttribute("orderType", OrderType);
-		model.addAttribute("PageNum", PageNum);
-		model.addAttribute("tipoUtente", "ADMIN");
-		
-		return "customer";
-	}
+//	@PostMapping(value = "/controlla")
+//	public String getHome(Model model, HttpServletRequest request) {
+//		List<Utente> recordset = null;
+//		long NumRecords = 0;
+//		
+//		getAllUtenti();
+//		
+//		if(MainRecordSet!= null) {
+//			
+//			//record trovati nella tabella
+//			NumRecords = MainRecordSet.size();
+//			
+//			recordset = MainRecordSet.stream().filter(u -> u.getId() != -1).skip(0)
+//					.limit(LimitePag).collect(Collectors.toList());
+//		}
+//	//	tipoUtente = session.getAttribute("tipoUtente").toString();
+//		model.addAttribute("titolo","Utenti Customer");
+//		model.addAttribute("NumRecords", NumRecords);
+//		model.addAttribute("utenti", recordset);
+//		model.addAttribute("LimitePag", LimitePag);
+//		model.addAttribute("orderBy", OrderBy);
+//		model.addAttribute("orderType", OrderType);
+//		model.addAttribute("PageNum", PageNum);
+//		model.addAttribute("tipoUtente", "ADMIN");
+//		
+//		return "customer";
+//	}
+//	
 	
 	
-	
-	
-	
-	@PostMapping
+	@GetMapping
 	public String getUtenti(Model model, HttpServletRequest request) {
 		
 		List<Utente> recordset = null;
@@ -108,7 +106,6 @@ public class UtentiController {
 			recordset = MainRecordSet.stream().filter(u -> u.getId() != -1).skip(0)
 					.limit(LimitePag).collect(Collectors.toList());
 		}
-	//	tipoUtente = session.getAttribute("tipoUtente").toString();
 		model.addAttribute("titolo","Utenti Customer");
 		model.addAttribute("NumRecords", NumRecords);
 		model.addAttribute("utenti", recordset);
@@ -116,7 +113,7 @@ public class UtentiController {
 		model.addAttribute("orderBy", OrderBy);
 		model.addAttribute("orderType", OrderType);
 		model.addAttribute("PageNum", PageNum);
-		model.addAttribute("tipoUtente", "ADMIN");
+		model.addAttribute("tipoUtente", session.getAttribute("tipoUtente").toString());
 		
 		return "customer";
 	}
@@ -164,7 +161,6 @@ public class UtentiController {
 	@GetMapping(value = "/modifica/{id}")
 	public String compilaFormUtente(@PathVariable("id") int idUtente, Model model) {
 		Utente u = utentiService.selById(idUtente);
-		
 		model.addAttribute("titolo", "Modifica Utente");
 		model.addAttribute("modUtente", u);
 		
@@ -177,7 +173,6 @@ public class UtentiController {
 		Utente user = utentiService.selById(u.getId());
 		
 		String data = u.getNascita().toString();
-		
 		user.setPassword(passwordEncoder.encode(u.getPassword()));
 		utentiService.Aggiorna(user);
 		
@@ -188,10 +183,13 @@ public class UtentiController {
 	
 	
 	@RequestMapping(value="/prova")
-	public String home(ModelMap model, Authentication authentication) {
+	public String home(ModelMap model, Authentication authentication, HttpServletRequest request) {
 		authentication.getPrincipal();
 		model.addAttribute("utente", utentiService.selByUserDetails(authentication.getName()));
- 		return "profilo";
+		session = request.getSession();
+		session.setAttribute("username", authentication.getName());
+		session.setAttribute("tipoUtente", utentiService.selByUserDetails(authentication.getName()).getTipoutente().getTipo().toString());
+ 		return "redirect:/utenti";
  	}
 	
 	

@@ -1,5 +1,6 @@
 package com.rentalcar.security;
 
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(UserDetailsService).passwordEncoder(passwordEncoder());
+		
 	}
 	
 	// CONFIGURAZIONE PAGINA DI LOGIN
@@ -58,13 +60,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http
 		.authorizeRequests()
 		.antMatchers("/resources/**").permitAll()
-		.antMatchers("/").hasAnyRole("ANONYMOUS", "CUSTOMER")
-		.antMatchers("/utenti/**").hasAnyRole("ADMIN","CUSTOMER")
+		.antMatchers("/login/**").permitAll()
+		.antMatchers("/").hasAnyRole("ADMIN", "CUSTOMER")
+		.antMatchers(ADMIN_UTENTI_MATCHER).access("hasRole('ADMIN')")
+		.antMatchers("/utenti/**").hasRole("CUSTOMER")
 		.and()
 //		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 			.formLogin()
 			.loginPage("/login/form")
-			.loginProcessingUrl("/login")
+			.loginProcessingUrl("/utenti/prova")
 			.defaultSuccessUrl("/utenti/prova")
 			.failureUrl("/login/form?error")
 			.usernameParameter("username")
@@ -75,32 +79,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.and()
 			.logout()
 			.logoutUrl("/login/form?logout");
-//		//.and().csrf().disable();
+		//.and().csrf().disable();
 	}
-	
-	
-	
-	
-//	  @Bean
-//	  public UserDetailsService userDetailsService() {
-//	    return new CustomUserDetailsService();
-//	  };
-    
-    
-//	@Override
-//	public void configure(final AuthenticationManagerBuilder auth) throws Exception{
-//	  auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
-//	  auth.authenticationProvider(authenticationProvider());
-//	}
-	
-//	@Bean
-//	public DaoAuthenticationProvider authenticationProvider() {
-//		DaoAuthenticationProvider atp = new DaoAuthenticationProvider();
-//		atp.setUserDetailsService(UserDetailsService);
-//		atp.setPasswordEncoder(passwordEncoder());
-//		
-//		return atp;
-//	}
 	
 	private final static String[] ADMIN_UTENTI_MATCHER = {
 			"/utenti/aggiungi/**",
@@ -111,30 +91,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
  
 	
 	
-	
-	
-//	public AuthenticationFilter authenticationFilter()throws Exception{
-//		AuthenticationFilter filter = new AuthenticationFilter();
-//		filter.setAuthenticationManager(authenticationManagerBean());
-//		filter.setAuthenticationFailureHandler(failureHandler());
-//		filter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
-//		
-//		return filter;
-//	}
-//	
-//	
-//	
-//	public SimpleUrlAuthenticationFailureHandler failureHandler() {
-//		return new SimpleUrlAuthenticationFailureHandler("/login/form?error");
-//	}
-//	
-//	
-//	@Bean
-//	public SavedRequestAwareAuthenticationSuccessHandler authenticationSuccessHandler() {
-//		SavedRequestAwareAuthenticationSuccessHandler auth = new SavedRequestAwareAuthenticationSuccessHandler();
-//		auth.setTargetUrlParameter("targetUrl");
-//		return auth;
-//	}
-	
+
 	
 }

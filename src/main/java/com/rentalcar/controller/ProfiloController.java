@@ -24,7 +24,7 @@ public class ProfiloController {
 	@GetMapping
 	public String getProfilo(Model model, HttpServletRequest request) {
 		session = request.getSession();
-		Utente u = utentiService.selById(Integer.parseInt(session.getAttribute("idCorrente").toString()));
+		Utente u = utentiService.selByUserDetails(session.getAttribute("username").toString());
 		
 		model.addAttribute("utente", u);
 		model.addAttribute("titolo", "Informazioni del profilo");

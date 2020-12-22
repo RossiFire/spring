@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
 		Utente u = utentiRepo.selByUserDetails(username);
-		GrantedAuthority authority = new SimpleGrantedAuthority(u.getTipoutente().getTipo());
+		GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + u.getTipoutente().getTipo());
 		UserDetails userDetails = (UserDetails)new User(u.getNome(),
 				u.getPassword(), Arrays.asList(authority));
 		return userDetails;

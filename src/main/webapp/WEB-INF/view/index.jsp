@@ -18,42 +18,28 @@
     <link href="<c:url value="/static/css/open-iconic-bootstrap.css" />" rel="stylesheet">
 	<script src="<c:url value="/static/js/filter.js" />"></script>
     <title>Home</title>
+    <style type="text/css">
+    	h1{
+    		text-align : center;
+    	}
+    	a{
+    		position: absolute;
+    		top: 50%;
+    		left: 50%;
+    		text-transform: uppercase;
+    		border-radius: 0px;
+    		margin-top: 20px;
+    		margin-left: -50px;
+    	}
+    </style>
 </head>
 
 <body>
+		<h1>RENTALCARR</h1>
 
-<!-- <div class="jumbotron jumbotron-billboard"> -->
-<!-- 	<div class="img"></div> -->
-<!-- 	<div class="container"> -->
-<!-- 		<div class="row"> -->
-<!-- 			<div class="col-lg-12"> -->
-<%-- 				<h2>${titolo}</h2> --%>
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
-<!-- </div> -->
-<%-- <p>${avviso}</p> --%>
-<!-- <div class="container"> -->
-<!-- 	<a href="?language=it" style="color: green">Italiano</a> -->
-<!-- 		<a href="?language=en" style="color: red">Inglese</a> -->
-<%-- 	<form:form modelAttribute="utente" method="POST" action="utenti/controlla"> --%>
-<!-- 		<div class="form-group"> -->
-<%-- 			<label for="n"><spring:message code="insUtente.form.nome.label" /></label> --%>
-<%-- 			<form:input type="text" path="nome" placeholder="Inserisci nome" id="n" /> --%>
-<!-- 		</div> -->
-<!-- 		<div class="form-group"> -->
-<%-- 			<label for="p"><spring:message code="insUtente.form.password.label" /></label> --%>
-<%-- 			<form:input type="password" path="password" --%>
-<%-- 				placeholder="Inserisci password" id="p" /> --%>
-<!-- 		</div> -->
-<%-- 		<form:button type="submit" class="btn btn-primary"><spring:message code="insUtente.form.btnAdd.label" /></form:button> --%>
-<%-- 	</form:form> --%>
-<!-- </div> -->
+	<img alt="" src="https://picsum.photos/1350/500">
 
-		<h1>HOLAAAAA</h1>
-
-
-		<a href="login/form">Accedi</a>
+		<a href="login/form" class="btn btn-warning">Accedi</a>
 	
 </body>
 </html>

@@ -4,10 +4,12 @@
 
 
 
-<c:url var="loginUrl" value="/login"/>
+<c:url var="loginUrl" value="/utenti/prova"/>
 
-
-<form action="${loginUrl}" method="POST">
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">LOGIN</h1>
+   		<form action="${loginUrl}" method="POST">
 
 	<c:if test="${param.error != null }">
 		<div class="alert alert-danger">
@@ -16,7 +18,7 @@
 	</c:if>
 	<c:if test="${param.forbidden != null }">
 		<div class="alert alert-danger">
-			<p>FORBIDDEN</p>
+			<p>NON HAI I PRIVILEGI PER FARE QUESTA OPERAZIONE</p>
 		</div>
 	</c:if>
 	<c:if test="${param.logout != null }">
@@ -30,7 +32,7 @@
 	
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		
-	<input type="submit" value="log in" />
-
-
+	<input type="submit" value="log in" class="btn btn-danger"/>
 </form>
+  </div>
+</div>
