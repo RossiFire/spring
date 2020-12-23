@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.antMatchers("/login/**").permitAll()
 		.antMatchers("/").permitAll()
 		.antMatchers(ADMIN_UTENTI_MATCHER).hasRole("ADMIN")
-		.antMatchers("/utenti/**").hasRole("CUSTOMER")
+		.antMatchers(CUSTOMER_UTENTI_MATCHER).hasRole("CUSTOMER")
 		.and()
 //		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 			.formLogin()
@@ -87,8 +87,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			"/utenti/aggiungi/**",
 			"/utenti/modifica/**",
 			"/utenti/elimina/**",
+			"/utenti/prova",
 	};
-			
+	
+	private final static String[] CUSTOMER_UTENTI_MATCHER = {
+			"/utenti/",
+			"/utenti/prova",
+	};
  
 	
 	
