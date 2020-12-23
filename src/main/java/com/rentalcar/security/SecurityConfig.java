@@ -63,8 +63,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.antMatchers("/resources/**").permitAll()
 		.antMatchers("/login/**").permitAll()
 		.antMatchers("/").permitAll()
-		.antMatchers(ADMIN_UTENTI_MATCHER).hasRole("ADMIN")
-		.antMatchers(CUSTOMER_UTENTI_MATCHER).hasRole("CUSTOMER")
+		.antMatchers(ADMIN_MATCHER).hasRole("ADMIN")
+		.antMatchers(CUSTOMER_MATCHER).hasAnyRole("CUSTOMER","ADMIN")
 		.and()
 //		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 			.formLogin()
@@ -83,16 +83,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		//.and().csrf().disable();
 	}
 	
-	private final static String[] ADMIN_UTENTI_MATCHER = {
+	private final static String[] ADMIN_MATCHER = {
 			"/utenti/aggiungi/**",
 			"/utenti/modifica/**",
 			"/utenti/elimina/**",
-			"/utenti/prova",
+			
+			"/mezzi/aggiungi/**",
+			"/mezzi/modifica/**",
+			"/mezzi/elimina/**",
+			
+			"/prenotazioni/aggiungi/**",
+			"/prenotazioni/modifica/**",
+			"/prenotazioni/elimina/**",
+			"/prenotazioni/approva/**"
 	};
 	
-	private final static String[] CUSTOMER_UTENTI_MATCHER = {
+	private final static String[] CUSTOMER_MATCHER = {
 			"/utenti/",
 			"/utenti/prova",
+			
+			"/mezzi/",
+			
+			"/prenotazioni/"
 	};
  
 	
